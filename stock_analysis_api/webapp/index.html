@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>台股波段濾網</title>
+<meta name="description" content="依三層濾網原則（月線→週線→日線）判斷台股是否符合高勝率波段買進條件" />
+
+<meta name="theme-color" content="#0E1A2B" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="波段濾網" />
+<meta name="mobile-web-app-capable" content="yes" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <h1>台股波段濾網</h1>
+    </div>
+    <button class="icon-btn" id="settingsBtn" aria-label="開啟設定">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm8.94 2.6-1.6-.27a7.3 7.3 0 0 0-.5-1.2l.95-1.32a1 1 0 0 0-.1-1.3l-1.1-1.1a1 1 0 0 0-1.3-.1l-1.32.95a7.3 7.3 0 0 0-1.2-.5l-.27-1.6A1 1 0 0 0 13.5 3h-1.5a1 1 0 0 0-1 .84l-.27 1.6c-.42.13-.83.3-1.2.5L8.21 4.99a1 1 0 0 0-1.3.1l-1.1 1.1a1 1 0 0 0-.1 1.3l.95 1.32c-.2.37-.37.78-.5 1.2l-1.6.27A1 1 0 0 0 3.72 12v0a1 1 0 0 0 .84 1l1.6.27c.13.42.3.83.5 1.2l-.95 1.32a1 1 0 0 0 .1 1.3l1.1 1.1a1 1 0 0 0 1.3.1l1.32-.95c.37.2.78.37 1.2.5l.27 1.6a1 1 0 0 0 1 .84h1.5a1 1 0 0 0 1-.84l.27-1.6c.42-.13.83-.3 1.2-.5l1.32.95a1 1 0 0 0 1.3-.1l1.1-1.1a1 1 0 0 0 .1-1.3l-.95-1.32c.2-.37.37-.78.5-1.2l1.6-.27a1 1 0 0 0 .84-1v0a1 1 0 0 0-.84-1Z" fill="currentColor"/>
+      </svg>
+    </button>
+  </header>
+
+  <main>
+    <form class="query-row" id="queryForm" autocomplete="off">
+      <label for="stockCode" class="visually-hidden">股票代碼</label>
+      <input
+        id="stockCode"
+        name="stockCode"
+        inputmode="numeric"
+        pattern="[0-9A-Za-z]*"
+        placeholder="輸入股票代碼，例如 2330"
+        required
+      />
+      <button type="submit" id="submitBtn">分析</button>
+    </form>
+
+    <p class="hint">三層濾網：月線趨勢 → 週線趨勢 → 日線型態確認</p>
+
+    <section id="resultArea" class="result-area" aria-live="polite">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-funnel" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p>輸入股票代碼，開始三層濾網分析</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="disclaimer">本工具僅供技術分析架構參考，不構成任何投資建議</footer>
+</div>
+
+<!-- 安裝提示（iOS 無法使用 beforeinstallprompt，改用手動說明） -->
+<div class="toast" id="installToast">
+  <p id="installToastText"></p>
+  <button id="installToastClose" aria-label="關閉">✕</button>
+</div>
+
+<!-- 設定面板 -->
+<div class="sheet-backdrop" id="settingsBackdrop" hidden></div>
+<div class="sheet" id="settingsSheet" role="dialog" aria-label="設定" aria-hidden="true">
+  <div class="sheet-handle"></div>
+  <h2>設定</h2>
+  <label for="apiBaseUrl">API 位址</label>
+  <input id="apiBaseUrl" placeholder="留空＝使用目前網域（建議）" />
+  <p class="sheet-note">
+    若前端與後端分開部署，可在此填入後端網址，例如
+    <code>https://your-api.example.com</code>；與本頁同網域部署則留空即可。
+  </p>
+  <div class="sheet-actions">
+    <button id="saveSettings">儲存</button>
+    <button id="closeSettings" class="ghost">取消</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
